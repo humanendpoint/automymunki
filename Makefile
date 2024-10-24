@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 
-MUNKI_REPO_NAME?=my-serverless-munki
+MUNKI_REPO_NAME?=automymunki
 
 
 init:

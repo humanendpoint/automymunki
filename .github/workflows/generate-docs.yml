@@ -95,18 +95,4 @@ jobs:
       env:
         WIKI_REPO_DIR: ${{ github.workspace }}/wiki
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # this also accepts a input_file env var if it's a file to sync
-    # instead of a folder. if in use, input_md_directory can be removed.
-    # the exclude_files var can also be removed if no files are to be excluded.
-    - name: Sync wiki to Confluence
-      if: ${{ steps.generate-wiki.conclusion == 'success' }}
-      run: python3 autopkg/helpers/generate_confluence.py
-      env:
-        input_md_directory: wiki
-        exclude_files: Home.md,Munki.md,_Sidebar.md
-        cloud:
-        space_id: ${{ secrets.CONFLUENCE_SPACE_ID }}
-        parent_page_id: ${{ secrets.JIRA_SCRIPTS_PARENT_PAGE_ID }}
-        user: ${{ secrets.JIRA_USER }}
-        token: ${{ secrets.JIRA_TOKEN }}
+        REPO_NAME: munki/munki

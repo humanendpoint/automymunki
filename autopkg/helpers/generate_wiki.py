@@ -197,7 +197,7 @@ def gather_munki_info(workspace_directory, folder_path):
 
 
 def get_latest_tag():
-    repo_url = f"https://api.github.com/repos/humanendpoint/automaticmunki/tags"
+    repo_url = f"https://api.github.com/repos/{os.environ['REPO_NAME']}/tags"
     github_headers = {
         "Content-Type": "application/json",
         "Authorization": f"token {os.environ.get('GITHUB_TOKEN')}",
