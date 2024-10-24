@@ -19,7 +19,7 @@ def create_or_update_manifests():
     try:
         user_name = os.environ["LOGIN"]
         if os.environ["PR_NUMBER"]:
-            pr_number = f"<https://github.com/humanendpoint/automaticmunki/pull/{os.environ['PR_NUMBER']}|{os.environ['PR_NUMBER']}>"
+            pr_number = f"<https://github.com/{os.environ['REPO_NAME']}/pull/{os.environ['PR_NUMBER']}|{os.environ['PR_NUMBER']}>"
         else:
             pr_number = "No change needed"
         # set times
