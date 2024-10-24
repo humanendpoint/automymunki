@@ -43,3 +43,4 @@ There's plenty of wiggle room to customize this further, but there are a few thi
 
 #### For GCP
 - `GCP_CREDENTIALS`
+- `BUCKET`
