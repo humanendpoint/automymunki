@@ -91,3 +91,4 @@ jobs:
           NEW_SERIAL: ${{ env.SERIAL }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
           LOGIN: ${{ env.LOGIN }}
+          REPO_NAME: humanendpoint/automymunki
