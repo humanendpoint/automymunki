@@ -1,0 +1,51 @@
+Identifier: local.munki.icu4c
+Input:
+  INPUT_DESCRIPTION: |
+    ICU is a mature, widely used set of C/C++ and Java libraries providing Unicode and Globalization support for software applications.
+
+    ICU is widely portable and gives applications the same results on all platforms and between C/C++ and Java software.
+  MUNKI_REPO_SUBDIR: apps/%NAME%
+  NAME: icu4c
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    developer: unicode
+    display_name: icu4c
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.icu4c
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.grahampugh.recipes.commonprocessors/StringReplacer:
+      git_hash: a2d4f7bc18c2b403812b10846a45cfc3717a0448
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/CommonProcessors/StringReplacer.py
+      sha256_hash: a57ca13c0bbf5c4f0631b44e4b29c410d1d3a9aba253b2fe38b9be7e5895a0fc
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.icu4c:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/icu4c/icu4c.download.recipe.yaml
+      sha256_hash: 93f4bb8fca30643633ea4c73dfe2c9196e3a03d5f2aa80cd6f0a1aa956948457
+    com.github.humanendpoint.munki.icu4c:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/icu4c/icu4c.munki.recipe.yaml
+      sha256_hash: cc5d28e79488f4851deaa0b857f9ec243360ff2e3b12007b7e69e431aa27aece
+    com.github.humanendpoint.pkg.icu4c:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/icu4c/icu4c.pkg.recipe.yaml
+      sha256_hash: 51e2736ba324d572395517e4e24a1c6c47f3f5f45c8f7566aa84aed1a714a8e5
+    com.github.humanendpoint.sign.icu4c:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/icu4c/icu4c.sign.recipe.yaml
+      sha256_hash: 1920da50452f0c60401ab90a1bb1a4a1162ab6233a49a3c83288a954767516c9

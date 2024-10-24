@@ -1,0 +1,112 @@
+name: Update wiki docs
+
+on:
+  push:
+    paths:
+      - "autopkg/**.py"
+      - "autopkg/**.sh"
+    branches-ignore:
+      - dev
+
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    if: github.event.pusher.username != 'github-actions'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v45
+
+    - name: Test some scripts
+      id: test-scripts
+      if: ${{ steps.changed-files.outputs.all_changed_files }}
+      run: |
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          if [[ $file == *.py ]]; then
+            # Capture the current script content
+            current_script_content=$(cat "$file")
+
+            # Capture the previous script content
+            if git show HEAD~1:"$file" > /tmp/previous_script_content; then
+              previous_script_content=$(cat /tmp/previous_script_content)
+            else
+              previous_script_content="NA"
+            fi
+
+            # Test if the docstring has changed
+            result=$(python3 autopkg/tests/test_docstrings.py "$current_script_content" "$previous_script_content")
+
+            if [ "$result" == "TRUE" ]; then
+              echo "Docstring in $file has changed."
+              echo "TRUE" >> /tmp/docstring_result.txt
+            else
+              echo "No changes in docstring of $file."
+              echo "FALSE" >> /tmp/docstring_result.txt
+            fi
+          fi
+        done
+
+        if grep -q "TRUE" /tmp/docstring_result.txt; then
+          echo "UPLOAD=TRUE" >> $GITHUB_OUTPUT
+        else
+          echo "UPLOAD=FALSE" >> $GITHUB_OUTPUT
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout wiki code
+      if: ${{ steps.test-scripts.outputs.UPLOAD == 'TRUE' }}
+      id: checkout
+      uses: actions/checkout@v4
+      with:
+        repository: ${{github.repository}}.wiki
+        path: wiki
+
+    - name: Set up Git
+      if: ${{ steps.checkout.conclusion == 'success' }}
+      id: setup-git
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install py dependencies
+      if: ${{ steps.setup-git.conclusion == 'success' }}
+      id: install-deps
+      run: |
+        pip install requests python-dotenv markdown markdown-it-py
+
+    - name: Create tempfile for next step
+      if: ${{ steps.install-deps.conclusion == 'success' }}
+      id: run-cmds
+      run: |
+        touch ${{ github.workspace }}/_Sidebar.md
+
+    - name: Generate Documentation
+      if: ${{ steps.run-cmds.conclusion == 'success' }}
+      id: generate-wiki
+      run: python3 autopkg/helpers/generate_wiki.py ${{ github.workspace }}
+      env:
+        WIKI_REPO_DIR: ${{ github.workspace }}/wiki
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # this also accepts a input_file env var if it's a file to sync
+    # instead of a folder. if in use, input_md_directory can be removed.
+    # the exclude_files var can also be removed if no files are to be excluded.
+    - name: Sync wiki to Confluence
+      if: ${{ steps.generate-wiki.conclusion == 'success' }}
+      run: python3 autopkg/helpers/generate_confluence.py
+      env:
+        input_md_directory: wiki
+        exclude_files: Home.md,Munki.md,_Sidebar.md
+        cloud:
+        space_id: ${{ secrets.CONFLUENCE_SPACE_ID }}
+        parent_page_id: ${{ secrets.JIRA_SCRIPTS_PARENT_PAGE_ID }}
+        user: ${{ secrets.JIRA_USER }}
+        token: ${{ secrets.JIRA_TOKEN }}

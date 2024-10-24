@@ -1,0 +1,47 @@
+Identifier: local.munki.libtool
+Input:
+  MUNKI_REPO_SUBDIR: apps/gnu
+  NAME: libtool
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    description: Generic library support script. Made by GNU.
+    developer: GNU Software
+    display_name: '%NAME%'
+    name: '%NAME%'
+    requires:
+    - m4
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.libtool
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.libtool:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libtool/libtool.download.recipe.yaml
+      sha256_hash: f5808c699c5b070a5742efeede579aac96b2617d2e92033b737514a1fd179a27
+    com.github.humanendpoint.munki.libtool:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libtool/libtool.munki.recipe.yaml
+      sha256_hash: 2ce59f7815b7f7d9d8c149b59a32a0a1fff813773b6059eeadfa181c84547449
+    com.github.humanendpoint.pkg.libtool:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libtool/libtool.pkg.recipe.yaml
+      sha256_hash: c125062d21f082fa262dfe4f8ea57f220ecd5a39548a1264f422e4fc6f05bdaa
+    com.github.humanendpoint.sign.libtool:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libtool/libtool.sign.recipe.yaml
+      sha256_hash: 249d67522b31aef229894cb9e2d74867bb9209d85d3ad2bac8691aca502e953e

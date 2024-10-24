@@ -1,0 +1,47 @@
+Identifier: local.munki.automake
+Input:
+  MUNKI_REPO_SUBDIR: apps/gnu
+  NAME: automake
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    description: Tool for generating GNU Standards-compliant Makefiles.
+    developer: GNU Software
+    display_name: '%NAME%'
+    name: '%NAME%'
+    requires:
+    - autoconf
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.automake
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.automake:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/automake/automake.download.recipe.yaml
+      sha256_hash: 00cfa9c1a5e0d98b15f7707470d3e53d0f0ac187feefb2a0d4d4e47abcfd8d8d
+    com.github.humanendpoint.munki.automake:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/automake/automake.munki.recipe.yaml
+      sha256_hash: 025905ba3a7b8a5460225a0b19e0e1c7e309f169988ee9b1a04c2e8ed8bf9036
+    com.github.humanendpoint.pkg.automake:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/automake/automake.pkg.recipe.yaml
+      sha256_hash: 3b5873b202935e0912e64b9d79e9ba58de284d9058dbd794b9f9dde35e3a7090
+    com.github.humanendpoint.sign.automake:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/automake/automake.sign.recipe.yaml
+      sha256_hash: 028fac85b40b7e38b6c22c26ce64e2075607ea2256698e8d1e60756716e4a08f

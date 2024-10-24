@@ -1,0 +1,41 @@
+Identifier: local.munki.lectricus
+Input:
+  INPUT_DESCRIPTION: Programmatic Electron fuse detection.  Runs via commandline.
+  MUNKI_REPO_SUBDIR: apps/%NAME%
+  NAME: Lectricus
+  pkginfo:
+    catalogs:
+    - testing
+    category: Security
+    developer: RIPEDA Consulting Corporation
+    display_name: Lectricus
+    name: '%NAME%'
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.Lectricus
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.grahampugh.recipes.commonprocessors/StringReplacer:
+      git_hash: a2d4f7bc18c2b403812b10846a45cfc3717a0448
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/CommonProcessors/StringReplacer.py
+      sha256_hash: a57ca13c0bbf5c4f0631b44e4b29c410d1d3a9aba253b2fe38b9be7e5895a0fc
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.Lectricus:
+      git_hash: bfa26ad12f749bd2c8856a78b2c4bd73fe1261c9
+      path: ~/work/munki/munki/autopkg/recipes/RIPEDA Consulting Corporation/Lectricus.download.recipe.yaml
+      sha256_hash: 3c56ee9aee26030b600619db17605f777bda3bcbc5a37782030324e6ce4ba414
+    com.github.humanendpoint.munki.Lectricus:
+      git_hash: bfa26ad12f749bd2c8856a78b2c4bd73fe1261c9
+      path: ~/work/munki/munki/autopkg/recipes/RIPEDA Consulting Corporation/Lectricus.munki.recipe.yaml
+      sha256_hash: 24249a0c0e1f9dbdfcdc7f788d675c103dceef5c59e1e5e5315febce9c05de63
+    com.github.humanendpoint.pkg.Lectricus:
+      git_hash: bfa26ad12f749bd2c8856a78b2c4bd73fe1261c9
+      path: ~/work/munki/munki/autopkg/recipes/RIPEDA Consulting Corporation/Lectricus.pkg.recipe.yaml
+      sha256_hash: 553ea7f3e14d724dfbb68df9fa4fdc64e9d66230b433cb1c62bfae5dcc217cf3
+    com.github.humanendpoint.sign.Lectricus:
+      git_hash: bfa26ad12f749bd2c8856a78b2c4bd73fe1261c9
+      path: ~/work/munki/munki/autopkg/recipes/RIPEDA Consulting Corporation/Lectricus.sign.recipe.yaml
+      sha256_hash: 73ce1a273c82488619af11317bdb307d1acd0e81f16cecbbf6352a6feca6b142

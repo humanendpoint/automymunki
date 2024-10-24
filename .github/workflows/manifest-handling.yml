@@ -1,0 +1,93 @@
+---
+name: Handle Manifest
+
+on:
+  workflow_dispatch:
+    inputs:
+      LOGIN:
+        description: user
+        required: false
+      SERIAL:
+        description: serial number
+        required: true
+      DEPARTMENT:
+        description: user department
+        required: false
+
+env:
+  SERIAL: ${{ inputs.SERIAL }}
+  DEPARTMENT: ${{ inputs.DEPARTMENT }}
+  LOGIN: ${{ inputs.LOGIN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  check_manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install slack_sdk requests
+          sudo apt update
+          sudo apt install libxml2-utils
+
+      - name: Create or edit manifest
+        id: manifest_manipulation
+        run: |
+          python autopkg/helpers/generate_manifest.py
+        env:
+          OPTIONAL_INSTALLS:
+          ADDITIONAL_CATALOGS:
+          OKTA_API_TOKEN: ${{ secrets.OKTA_API_TOKEN }}
+          OKTA_DOMAIN:
+
+      - name: GCS Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          token_format: 'access_token'
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: Setup Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Upload to Bucket
+        id: upload-file
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: ./munki_repo/manifests/${{ env.SERIAL }}
+          destination: 'oit-munki/manifests'
+          process_gcloudignore: false
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: ${{ env.SERIAL}}-${{ github.sha }}
+          title: '[skip ci] Serial No. add to Repo'
+          commit-message: '[skip ci] serial number add'
+          body: |
+            New serial number manifest added to repo.
+
+            Please approve this change as soon as possible.
+
+            - This message was auto generated.
+
+      - name: Slack output
+        run: |
+          python autopkg/helpers/manifest_slack_output.py
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          BOT_ID: ${{ secrets.BOT_ID }}
+          NEW_SERIAL: ${{ env.SERIAL }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          LOGIN: ${{ env.LOGIN }}

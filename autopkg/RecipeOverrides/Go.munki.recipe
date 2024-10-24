@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>local.munki.Go</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>apps/Go</string>
+		<key>NAME</key>
+		<string>Go</string>
+		<key>RE_PATTERN</key>
+		<string>href="(?P&lt;href&gt;\/dl.*?go(?P&lt;version&gt;.*?)\.darwin-arm64.pkg)"</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>production</string>
+			</array>
+			<key>category</key>
+			<string>Development</string>
+			<key>description</key>
+			<string>&lt;a target='new' href='https://go.dev/doc/tutorial/getting-started'&gt;Golang&lt;/a&gt; is an open source programming language that makes it easy to build simple, reliable, and efficient software.&lt;br&gt;
+&lt;br&gt;
+</string>
+			<key>display_name</key>
+			<string>Go Programming Language</string>
+			<key>minimum_os_version</key>
+			<string>10.8</string>
+			<key>developer</key>
+			<string>The Go Authors</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>supported_architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>com.github.timsutton.munki.Go</string>
+	<key>ParentRecipeTrustInfo</key>
+	<dict>
+		<key>non_core_processors</key>
+		<dict/>
+		<key>parent_recipes</key>
+		<dict>
+			<key>com.github.timsutton.download.Go</key>
+			<dict>
+				<key>git_hash</key>
+				<string>da5dd6d06172d705c1b746979c0156d1884213df</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.timsutton-recipes/Go/Go.download.recipe</string>
+				<key>sha256_hash</key>
+				<string>e0e3fde799857c03e7a7d8a8124b7f4ec7d09f2904be4b2930ec6032cbe8275b</string>
+			</dict>
+			<key>com.github.timsutton.munki.Go</key>
+			<dict>
+				<key>git_hash</key>
+				<string>da5dd6d06172d705c1b746979c0156d1884213df</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.timsutton-recipes/Go/Go.munki.recipe</string>
+				<key>sha256_hash</key>
+				<string>a58931d27d954b7abcd8841060b69acf26146ee42ad3ea027db5d6f70373f209</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

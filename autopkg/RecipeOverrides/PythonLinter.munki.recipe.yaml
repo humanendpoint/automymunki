@@ -1,0 +1,45 @@
+Identifier: local.munki.PythonLinter
+Input:
+  INPUT_DESCRIPTION: A Visual Studio Code extension that supports Python debugging
+    with debugpy.
+  MARKETPLACE_NAME: python
+  MUNKI_REPO_SUBDIR: apps/VSCE
+  NAME: VSCE-PythonLinter
+  PUBLISHER: ms-python
+  pkginfo:
+    catalogs:
+    - testing
+    category: VSCode Extensions
+    description: ''
+    developer: Microsoft
+    display_name: Python Linter
+    name: '%NAME%'
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.vscepythonlinter
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.grahampugh.recipes.commonprocessors/StringReplacer:
+      git_hash: a2d4f7bc18c2b403812b10846a45cfc3717a0448
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/CommonProcessors/StringReplacer.py
+      sha256_hash: a57ca13c0bbf5c4f0631b44e4b29c410d1d3a9aba253b2fe38b9be7e5895a0fc
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.vscepythonlinter:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/PythonLinter.download.recipe.yaml
+      sha256_hash: 366277ce229b5d0f169835d69af571ef39c37b0fd4bad8516fb75cf3a9092f90
+    com.github.humanendpoint.munki.vscepythonlinter:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/PythonLinter.munki.recipe.yaml
+      sha256_hash: b605b27af0799982cc1d196092c6b685622618666e0567068f83db2cedaca9ea
+    com.github.humanendpoint.pkg.vscepythonlinter:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/PythonLinter.pkg.recipe.yaml
+      sha256_hash: 85bb74c4c64ee54c7e2fd05ccb6fde7521e1a3c20136b83c18f167a9f5077ff0
+    com.github.humanendpoint.sign.vscepythonlinter:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/PythonLinter.sign.recipe.yaml
+      sha256_hash: 7d2681c812d55b5e0ae65077443cd7436914d72398b1f0c2c13bf75e55b68d83

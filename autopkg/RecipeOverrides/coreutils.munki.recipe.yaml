@@ -1,0 +1,48 @@
+Identifier: local.munki.coreutils
+Input:
+  MUNKI_REPO_SUBDIR: apps/gnu
+  NAME: coreutils
+  SIGNINGCERTIFICATE: 'Developer ID Installer: ()'
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    description: GNU File, Shell, and Text utilities.
+    developer: GNU Software
+    display_name: '%NAME%'
+    name: '%NAME%'
+    requires:
+    - gmp
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.coreutils
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.coreutils:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/coreutils/coreutils.download.recipe.yaml
+      sha256_hash: 3d4a17667d7b6157f3b7130b3ffa49d612a8761c5439d3876a851f8b3e7ad8c9
+    com.github.humanendpoint.munki.coreutils:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/coreutils/coreutils.munki.recipe.yaml
+      sha256_hash: 0a7f4d5fd8e540db094fdf74c2a93b269c5cbf6d03697287ef9c6aba360e5ed0
+    com.github.humanendpoint.pkg.coreutils:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/coreutils/coreutils.pkg.recipe.yaml
+      sha256_hash: ffdac85458a3e5d2da7e9050dffa075ec3ab08a40e3420cc57b13d5d62907dbd
+    com.github.humanendpoint.sign.coreutils:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/coreutils/coreutils.sign.recipe.yaml
+      sha256_hash: 4724ba5cab5872322a665f3f67e9b63ef096781837ed64c0029509dbf2bc8415

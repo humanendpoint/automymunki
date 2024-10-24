@@ -1,55 +1,84 @@
+---
 name: Sync Munki Repo
 
 on:
-  push:
-    paths:
-    - 'munki_repo/**'
-    branches:
-    - master
   workflow_dispatch:
 
 jobs:
   sync-repo:
     runs-on: macos-latest
-
+    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b #v3.0.2
+      - uses: actions/checkout@v4
         with:
           lfs: 'true'
-          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Install AWS CLI
+      - name: Install python dependencies
         run: |
-          curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-          sudo installer -pkg ./AWSCLIV2.pkg -target /
-          sudo rm AWSCLIV2.pkg
-      
+          python3 -m pip install --upgrade pip --break-system-packages
+          pip3 install crcmod --break-system-packages
+
       - name: Install Munki
         run: |
-          curl -OL https://github.com/munki/munki/releases/download/v5.6.3/munkitools-5.6.3.4401.pkg
-          sudo installer -pkg munkitools-5.6.3.4401.pkg -target /
-          sudo rm munkitools-5.6.3.4401.pkg
-    
-      - name: Run makecatalogs
-        run : |
-          /usr/local/munki/makecatalogs "$GITHUB_WORKSPACE"/munki_repo
-      - name: Run AWS s3 sync
+          curl -L ${{ env.MUNKI_URL }} --output /tmp/munkitools.pkg
+          echo "${{ env.MUNKI_SHA256 }} */tmp/munkitools.pkg" | shasum -c
+          if [[ $? != "0" ]]; then exit 1; fi
+          sudo installer -pkg /tmp/munkitools.pkg -target /
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run : |
-          aws s3 sync "$GITHUB_WORKSPACE"/munki_repo s3://<ADD-YOUR-BUCKET-ID-HERE> --exclude '.DS_Store' --exclude '.keep' --delete
-  
+          MUNKI_SHA256: "5693054947a6f6e696ab6906ae48257802b1348aa2b6a78bd75b6573e37c4483"
+          MUNKI_URL: "https://github.com/munki/munki/releases/download/v6.6.0/munkitools-6.6.0.4690.pkg"
+
+      - name: GCS Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          token_format: 'access_token'
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: Setup Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Run makecatalogs
+        run: |
+          /usr/local/munki/makecatalogs "${GITHUB_WORKSPACE}"/munki_repo -s
+
+      - name: Bucket Sync
+        run: |
+          export CLOUDSDK_PYTHON=$(which python3)
+          gsutil -m rsync -r -d -x '.DS_Store|.git' "${GITHUB_WORKSPACE}"/munki_repo/manifests gs://oit-munki/manifests
+          gsutil -m rsync -r -d -x '.DS_Store|.git' "${GITHUB_WORKSPACE}"/munki_repo/catalogs gs://oit-munki/catalogs
+          gsutil -m rsync -r -d -x '.DS_Store|.git' "${GITHUB_WORKSPACE}"/munki_repo/icons gs://oit-munki/icons
+          gsutil -m rsync -r -d -x '.DS_Store|.git' "${GITHUB_WORKSPACE}"/munki_repo/pkgsinfo gs://oit-munki/pkgsinfo
+          gsutil -m rsync -r -d -x '.DS_Store|.git' "${GITHUB_WORKSPACE}"/munki_repo/client_resources gs://oit-munki/client_resources
+
+  slack-notify-error:
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Construct message
+        id: slack-error-msg
+        run: |
+          SLACK_MESSAGE="Follow <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|this link> for specific error info."
+          echo "$SLACK_MESSAGE" >> $GITHUB_OUTPUT
+
+      - name: Send Slack notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: ${{ steps.slack-error-msg.outputs.slack-message }}
+          MSG_MINIMAL: true
+          SLACK_TITLE: Error syncing repo to GCS bucket
+          SLACK_FOOLTER:
+
   slack-notify:
     runs-on: ubuntu-latest
     needs: sync-repo
     steps:
       - name: Send Slack notification
-        uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7 #v2.2.0
+        uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_ICON: https://avatars.githubusercontent.com/u/8826633?s=200&v=4
-          SLACK_USERNAME: Github Actions
-          SLACK_FOOTER: 
           MSG_MINIMAL: true
-          SLACK_TITLE: Munki repo was synced
+          SLACK_TITLE: Completed Munki sync

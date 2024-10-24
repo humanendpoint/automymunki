@@ -1,0 +1,46 @@
+Identifier: local.munki.m4
+Input:
+  MUNKI_REPO_SUBDIR: apps/gnu
+  NAME: m4
+  SIGNINGCERTIFICATE: 'Developer ID Installer: ()'
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    description: Macro processing language.
+    developer: GNU Software
+    display_name: '%NAME%'
+    name: '%NAME%'
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.m4
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.m4:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/m4/m4.download.recipe.yaml
+      sha256_hash: da77e14d5f0bc2fd0fd2ce61329b018288e2a4477406803893276673d335e5b9
+    com.github.humanendpoint.munki.m4:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/m4/m4.munki.recipe.yaml
+      sha256_hash: 65124242706b04be9cbe6a8fd3f00329888c4ace318b5e8d4b4e083d5d3f285c
+    com.github.humanendpoint.pkg.m4:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/m4/m4.pkg.recipe.yaml
+      sha256_hash: a36f2b01f87006dd3bd061889930fa8fd36c220bc19a8cf21e5dafb70ae10ad4
+    com.github.humanendpoint.sign.m4:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/m4/m4.sign.recipe.yaml
+      sha256_hash: 54b441b743b2800a865f29fbea6037c238872a8907e56fa86743f3d16f33221a

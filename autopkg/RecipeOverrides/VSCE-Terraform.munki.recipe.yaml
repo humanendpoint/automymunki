@@ -1,0 +1,47 @@
+Identifier: local.munki.VSCE-Terraform
+Input:
+  INPUT_DESCRIPTION: The HashiCorp Terraform Extension for Visual Studio Code (VS
+    Code). The Terraform Language Server adds editing features for Terraform files
+    such as syntax highlighting, IntelliSense, code navigation, code formatting, module
+    explorer and much more!
+  MARKETPLACE_NAME: terraform
+  MUNKI_REPO_SUBDIR: apps/VSCE
+  NAME: VSCE-Terraform
+  PUBLISHER: HashiCorp
+  pkginfo:
+    catalogs:
+    - testing
+    category: VSCode Extensions
+    description: ''
+    developer: HashiCorp
+    display_name: Terraform VSCode Extension
+    name: '%NAME%'
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.vsceterraform
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.grahampugh.recipes.commonprocessors/StringReplacer:
+      git_hash: a2d4f7bc18c2b403812b10846a45cfc3717a0448
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/CommonProcessors/StringReplacer.py
+      sha256_hash: a57ca13c0bbf5c4f0631b44e4b29c410d1d3a9aba253b2fe38b9be7e5895a0fc
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.vsceterraform:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/VSCE-Terraform.download.recipe.yaml
+      sha256_hash: 362d3148afdee7b070049f3bc566ce4168101c88d335f595a1b72617f5c86af8
+    com.github.humanendpoint.munki.vsceterraform:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/VSCE-Terraform.munki.recipe.yaml
+      sha256_hash: 395973e34849872b90046eed287e8d2c7b2d4aa62755c4172e59e980d8455a3b
+    com.github.humanendpoint.pkg.vsceterraform:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/VSCE-Terraform.pkg.recipe.yaml
+      sha256_hash: 2b2cc69edd594a909db942892ca76c87919f41577685d8ca7660d68131a44667
+    com.github.humanendpoint.sign.vsceterraform:
+      git_hash: fae7a9cd9ad6215a08a025fbc4b53e47c5b0cbfa
+      path: ~/work/munki/munki/autopkg/recipes/VSCodeExtensions/VSCE-Terraform.sign.recipe.yaml
+      sha256_hash: 92c855af890abea0ac9989058f97982e2b8d07c96008b4116d214989e9c73b57

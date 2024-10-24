@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>local.munki.VisualStudioCode</string>
+	<key>Input</key>
+	<dict>
+		<key>DOWNLOAD_URL</key>
+		<string>https://go.microsoft.com/fwlink/?LinkID=2156837</string>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>apps/vscode</string>
+		<key>NAME</key>
+		<string>Visual Studio Code</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>production</string>
+			</array>
+			<key>category</key>
+			<string>Text Editors</string>
+			<key>description</key>
+			<string>A source-code editor made by Microsoft for Windows, Linux and macOS. Features include support for debugging, syntax highlighting, intelligent code completion, snippets, code refactoring, and embedded Git.</string>
+			<key>display_name</key>
+			<string>Visual Studio Code</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>postinstall_script</key>
+			<string>#!/bin/bash
+USER=$( scutil &lt;&lt;&lt; "show State:/Users/ConsoleUser" | awk '/Name :/ &amp;&amp; ! /loginwindow/ { print $3 }' )
+chown -R $USER /Users/$USER/Library/Caches/com.microsoft.VSCode.ShipIt
+xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code.app
+console_user_group=$(id -g -n $USER)
+APPLICATION_PATH="/Applications/Visual Studio Code.app"
+chown -R $USER:$console_user_group "${APPLICATION_PATH}"</string>
+			<key>preinstall_script</key>
+			<string>#!/bin/bash
+exitCode=0
+
+jq="/usr/local/bin/jq"
+
+# Get the currently logged-in user and go ahead if not root
+CURRENT_USER=$(/bin/ls -l /dev/console | /usr/bin/awk '{ print $3 }')
+
+if [[ -n "$CURRENT_USER" &amp;&amp; "$CURRENT_USER" != "root" ]]; then
+	USER_HOME=$(/usr/bin/dscl . -read "/Users/$CURRENT_USER" NFSHomeDirectory | /usr/bin/sed 's/^[^\/]*//g')
+	# If jq is executable, proceed with script.
+	# Otherwise halt and log an error.
+
+	if [[ -x "$jq" ]]; then
+		# If an existing settings.json file exists for Visual Studio Code,
+		# update it with the desired telemetry setting.
+		if [[ -f "$USER_HOME/Library/Application Support/Code/User/settings.json" ]]; then
+			vscode_settings="$USER_HOME/Library/Application Support/Code/User/settings.json"
+
+			# Update the telemetry settings
+			if [[ "$("$jq" '.["telemetry.telemetryLevel"]' "$vscode_settings")" != "\"off\"" ]]; then
+				"$jq" '. + {"telemetry.telemetryLevel": "off"}' "$vscode_settings" &gt; tmpfile &amp;&amp; mv tmpfile "$vscode_settings"
+			fi
+
+			# Update the update.mode settings
+			if [[ "$("$jq" '.["update.mode"]' "$vscode_settings")" != "\"none\"" ]]; then
+				"$jq" '. + {"update.mode": "none"}' "$vscode_settings" &gt; tmpfile &amp;&amp; mv tmpfile "$vscode_settings"
+			fi
+
+			# Update the redhat.telemetry.enabled settings
+			if [[ "$("$jq" '.["redhat.telemetry.enabled"]' "$vscode_settings")" != "false" ]]; then
+				"$jq" '. + {"redhat.telemetry.enabled": true}' "$vscode_settings" &gt; tmpfile &amp;&amp; mv tmpfile "$vscode_settings"
+			fi
+
+			/usr/sbin/chown -R "$CURRENT_USER" "$vscode_settings"
+		else
+			# If an existing settings.json file does not yet exist for Visual Studio Code,
+			# create the settings file with the desired telemetry setting.
+			if [[ ! -d "$USER_HOME/Library/Application Support/Code/User" ]]; then
+				sudo -u "$CURRENT_USER" /bin/mkdir -p "$USER_HOME/Library/Application Support/Code/User"
+			fi
+			vscode_settings="$USER_HOME/Library/Application Support/Code/User/settings.json"
+
+			# Create a new settings.json file with telemetry settings
+			/bin/cat &gt; "$vscode_settings" &lt;&lt; VSCODE_SETTINGS
+{
+	"telemetry.telemetryLevel": "off",
+	"update.mode": "none",
+	"redhat.telemetry.enabled": false
+}
+VSCODE_SETTINGS
+			/usr/sbin/chown -R "$CURRENT_USER" "$vscode_settings"
+		fi
+	else
+		echo "jq not executable!"
+		exitCode=1
+	fi
+
+	# Verify that the desired settings are in place
+	vscode_settings="$USER_HOME/Library/Application Support/Code/User/settings.json"
+	if [[ "$("$jq" '.["telemetry.telemetryLevel"]' "$vscode_settings")" == "\"off\"" &amp;&amp;
+			"$("$jq" '.["update.mode"]' "$vscode_settings")" == "\"none\"" &amp;&amp;
+			"$("$jq" '.["redhat.telemetry.enabled"]' "$vscode_settings")" == "false" ]]; then
+		echo "telemetry and everything is disabled"
+	else
+		echo "telemetry and everything is a mess!"
+	fi
+fi
+
+exit "$exitCode"</string>
+			<key>preuninstall_script</key>
+			<string>#!/bin/bash
+CURRENT_USER=$(/bin/ls -l /dev/console | /usr/bin/awk '{ print $3 }')
+USER_HOME=$(/usr/bin/dscl . -read "/Users/$CURRENT_USER" NFSHomeDirectory | /usr/bin/sed 's/^[^\/]*//g')
+rm -rf "$USER_HOME"/Library/Application\ Support/Code
+			</string>
+			<key>requires</key>
+			<array>
+				<string>jq</string>
+			</array>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>com.github.killahquam.munki.visualstudiocode</string>
+	<key>ParentRecipeTrustInfo</key>
+	<dict>
+		<key>non_core_processors</key>
+		<dict/>
+		<key>parent_recipes</key>
+		<dict>
+			<key>com.github.killahquam.download.visualstudiocode</key>
+			<dict>
+				<key>git_hash</key>
+				<string>e1c6fdbc3e80fb0f8b3e29ca6c9ed38067d9f17e</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.killahquam-recipes/VisualStudioCode/VisualStudioCode.download.recipe</string>
+				<key>sha256_hash</key>
+				<string>661e58dc573b5f48e073d95b537934a36c3033da9316a7ba92d1848ccc49b5e0</string>
+			</dict>
+			<key>com.github.killahquam.munki.visualstudiocode</key>
+			<dict>
+				<key>git_hash</key>
+				<string>b8639ace132f1d2893b898744c144ede800e953a</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.killahquam-recipes/VisualStudioCode/VisualStudioCode.munki.recipe</string>
+				<key>sha256_hash</key>
+				<string>8069536b3fca30dd289ee85c3b62c74aa62cd9178493ae7c8b804195b64bbcea</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

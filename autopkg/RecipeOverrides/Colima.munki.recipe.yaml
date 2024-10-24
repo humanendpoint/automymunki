@@ -1,0 +1,59 @@
+Identifier: local.munki.Colima
+Input:
+  ARCH: arm64
+  INPUT_DESCRIPTION: |
+    <a target='new' href='https://github.com/abiosoft/colima'>Colima</a> is a free and open-source web browser project, mainly developed and maintained by Google. This codebase provides the vast majority of code for the Google Chrome browser, which is proprietary software and has some additional features. The Chromium codebase is widely used.<br>
+    <br>
+    <h5>Features</h5>
+    <ul>
+    <li>Simple CLI interface</li>
+    <li>Docker and Containerd support</li>
+    <li>Port Forwarding</li>
+    <li>Volume mounts</li>
+    <li>Kubernetes</li>
+    <li>Multiple instances</li>
+    <li>Container runtimes with minimal setup</li>
+    </ul>
+    <br>
+  MUNKI_REPO_SUBDIR: apps/%NAME%
+  NAME: colima
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    developer: Abiosoft
+    display_name: '%NAME%'
+    name: '%NAME%'
+    unattended_install: true
+    uninstall_script: |
+      #!/bin/bash
+
+      rm /usr/local/bin/colima"
+ParentRecipe: com.github.humanendpoint.munki.Colima
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.grahampugh.recipes.commonprocessors/StringReplacer:
+      git_hash: a2d4f7bc18c2b403812b10846a45cfc3717a0448
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/CommonProcessors/StringReplacer.py
+      sha256_hash: a57ca13c0bbf5c4f0631b44e4b29c410d1d3a9aba253b2fe38b9be7e5895a0fc
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.Colima:
+      git_hash: 7ab1a1e98e35585baf7e431cefb641c94d4c6732
+      path: ~/work/munki/munki/autopkg/recipes/Colima/Colima.download.recipe.yaml
+      sha256_hash: e544390b79939d9bd95a8bddf8cd20da1d1d2ca213abd953639273e4c0c167a0
+    com.github.humanendpoint.munki.Colima:
+      git_hash: 7ab1a1e98e35585baf7e431cefb641c94d4c6732
+      path: ~/work/munki/munki/autopkg/recipes/Colima/Colima.munki.recipe.yaml
+      sha256_hash: b187c7d93e0bf62d0003f57aaac96327675b311f6e320d0ee882a4de5507b982
+    com.github.humanendpoint.pkg.Colima:
+      git_hash: 7ab1a1e98e35585baf7e431cefb641c94d4c6732
+      path: ~/work/munki/munki/autopkg/recipes/Colima/Colima.pkg.recipe.yaml
+      sha256_hash: 3846df99b7ede4d69171e13e001e648fc73952ed43177bfb438deeb20bc1c0d7
+    com.github.humanendpoint.sign.Colima:
+      git_hash: 7ab1a1e98e35585baf7e431cefb641c94d4c6732
+      path: ~/work/munki/munki/autopkg/recipes/Colima/Colima.sign.recipe
+      sha256_hash: 71a3457f5912c41a3f6fce428d1750444ac2691c595f320023eab1c777b47e71

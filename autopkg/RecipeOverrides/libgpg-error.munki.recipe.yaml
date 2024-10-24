@@ -1,0 +1,52 @@
+Identifier: local.munki.libgpg-error
+Input:
+  MUNKI_REPO_SUBDIR: apps/gnu
+  NAME: libgpg-error
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    description: Common error values for all GnuPG components.
+    developer: GNU Software
+    display_name: '%NAME%'
+    name: '%NAME%'
+    requires:
+    - libyaml
+    - gettext
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.libgpg-error
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/ApplyPatch:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/ApplyPatch.py
+      sha256_hash: 76d3125208f97814d0fa5c8d4847274c5278aaf46a78e7997052e1eb8b02e172
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.libgpg-error:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libgpg-error/libgpg-error.download.recipe.yaml
+      sha256_hash: 66c03ba193159175d15c7664b1eea794554b5c1275d60fbedba12f5c6e8c1ef2
+    com.github.humanendpoint.munki.libgpg-error:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libgpg-error/libgpg-error.munki.recipe.yaml
+      sha256_hash: a49d27b65a42825c1016d0d724c96e311b65c9e41ae7adb86321a71c1b953a23
+    com.github.humanendpoint.pkg.libgpg-error:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libgpg-error/libgpg-error.pkg.recipe.yaml
+      sha256_hash: 2423d9573d3c420792bc639e747abc74c82e03cfaa9b95fcba650141c366a602
+    com.github.humanendpoint.sign.libgpg-error:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/libgpg-error/libgpg-error.sign.recipe.yaml
+      sha256_hash: c6844bcdc6592c9c047290ae9f87c108b07b1628ec74a13d857ac417c59b08bb

@@ -1,0 +1,49 @@
+Identifier: local.munki.gmp
+Input:
+  MUNKI_REPO_SUBDIR: apps/gnu
+  NAME: gmp
+  pkginfo:
+    catalogs:
+    - testing
+    category: Development
+    description: GNU multiple precision arithmetic library.
+    developer: GNU Software
+    display_name: '%NAME%'
+    name: '%NAME%'
+    requires:
+    - autoconf
+    - automake
+    - libtool
+    unattended_install: true
+ParentRecipe: com.github.humanendpoint.munki.gmp
+ParentRecipeTrustInfo:
+  non_core_processors:
+    com.github.humanendpoint.processors/BuildMaker:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/BuildMaker.py
+      sha256_hash: f73b95fa7ce7b0c9bc007ce0670bc33b7acfb1501d2545f6435d9f3dede61c3c
+    com.github.humanendpoint.processors/URLDownloaderPython:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/processors/URLDownloaderPython.py
+      sha256_hash: 72337e153221fe1ba908684482f220ad376e59ad3b3a8f37b4bd0b7268998296
+    com.github.rtrouton.SharedProcessors/PkgSigner:
+      git_hash: 56fc1ee3588f12cdd86e4e202821229873c27e21
+      path: ~/Library/AutoPkg/RecipeRepos/com.github.autopkg.rtrouton-recipes/SharedProcessors/PkgSigner.py
+      sha256_hash: 464d1756f190a0161a6a00358cd42042bcdb5213802624d9ac58d3e723877a56
+  parent_recipes:
+    com.github.humanendpoint.download.gmp:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/gmp/gmp.download.recipe.yaml
+      sha256_hash: e51b7687dd67cfec3e0480b8fc14876b29f8fb3b215b413f20aabf7c75599dd2
+    com.github.humanendpoint.munki.gmp:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/gmp/gmp.munki.recipe.yaml
+      sha256_hash: 06abea85f3e52360f423ea0c0680148edd0e751a0cd8413cfbeb929a7f5199ba
+    com.github.humanendpoint.pkg.gmp:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/gmp/gmp.pkg.recipe.yaml
+      sha256_hash: 94f19cc2b01e50f4f6d29ee2a230e69b9b106b3c4c600514b75c43b73fcaf65b
+    com.github.humanendpoint.sign.gmp:
+      git_hash: 5cb2b8a3ea42329fb93961fb541ebb221b174108
+      path: ~/work/munki/munki/autopkg/recipes/gmp/gmp.sign.recipe.yaml
+      sha256_hash: 6ba4b60b4d76b8fe56220eab1af096fff17074dfb3447edf6c14842ed8d55f01
